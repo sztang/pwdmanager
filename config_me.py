@@ -1,9 +1,12 @@
 import configparser
 
-def read_config(config_name):
+def read_config(config_name, readAPI=False):
     config = configparser.ConfigParser()
     config.read(config_name)
-    return config['DEFAULT']['user_pass']
+    if not readAPI:
+        return config['DEFAULT']['user_pass']
+    else:
+        return {'API_KEY':config['API']['API_KEY'],'CSE_ID':config['API']['CSE_ID']}
 
 def set_admin_pass(config_pass):
     if config_pass == '':

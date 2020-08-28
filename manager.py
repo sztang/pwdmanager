@@ -16,37 +16,12 @@ def checkin():
     global conn, c
     auth = False
     while auth == False:    
-        if input("What is your password?\n") != admin_pass:
+        if input("What is your admin password?\n") != admin_pass:
             continue
         auth = True
     conn = sqlite3.connect('pwds.db')
     c = conn.cursor()
     checkdb_exists(c)
-
-"""
-def create_password(pass_key, service, admin_pass):
-    return sha256(admin_pass.encode('utf-8') + service.lower().encode('utf-8') + pass_key.encode('utf-8')).hexdigest()[:15]
-
-def get_hex_key(admin_pass, service):
-    return sha256(admin_pass.encode('utf-8') + service.lower().encode('utf-8')).hexdigest()
-
-def get_password(admin_pass, service):
-    secret_key = get_hex_key(admin_pass, service)
-    cursor = conn.execute("SELECT * from KEYS WHERE PASS_KEY=" + '"' + secret_key + '"')
-
-    file_string = ""
-    for row in cursor:
-        file_string = row[0]
-    return create_password(file_string, service, admin_pass)
-
-def add_password(service, admin_pass):
-    secret_key = get_hex_key(admin_pass, service)
-
-    command = 'INSERT INTO KEYS (PASS_KEY) VALUES (%s);' %('"' + secret_key +'"')        
-    conn.execute(command)
-    conn.commit()
-    return create_password(secret_key, service, admin_pass)
-"""
 
 def checkdb_exists(c):
     try:
@@ -56,16 +31,6 @@ def checkdb_exists(c):
     except:
         pass
     showmenu()
-
-"""
-if connect == ADMIN_PASSWORD:
-    try:
-        conn.execute('''CREATE TABLE KEYS
-            (PASS_KEY TEXT PRIMARY KEY NOT NULL);''')
-        print("Your safe has been created!\nWhat would you like to store in it today?")
-    except:
-        print("You have a safe, what would you like to do today?")
-""" 
     
 def showmenu():
     user_option = input("\n***************\nq: Quit app\ng: Get login credentials for a site\ns: Save new login credentials for a site\ne: Edit credentials for an existing account\np: Print username and password on site login\n")
@@ -136,31 +101,12 @@ def edit_rows(website=None): # WIP
         website = (input('Edit credentials for which website?\n'))
     row = c.execute("SELECT rowid, * from credentials WHERE website=?", (website,)).fetchone()
     new_username = str(input('Enter new username: \n'))
-    new_password = str(input('Enter new username: \n'))
+    new_password = str(input('Enter new password: \n'))
     c.execute("UPDATE credentials SET username=?, password=? WHERE rowid=?",(new_username, new_password, row[0],))
     if get_logins(website) == 'OK':
         print("Credentials updated - you're good to go.")
     else:
         print("There's been some error.")
 
-"""
-    while True:
-        print("\n"+ "*"*15)
-        print("Commands:")
-        print("q = quit program")
-        print("gp = get password")
-        print("sp = store password")
-        print("*"*15)
-        input_ = input(":")
-
-        if input_ == "q":
-            break
-        if input_ == "sp":
-            service = input("What is the name of the service?\n")
-            print("\n" + service.capitalize() + " password created:\n" + add_password(service, ADMIN_PASSWORD))
-        if input_ == "gp":
-            service = input("What is the name of the service?\n")
-            print("\n" + service.capitalize() + " password:\n"+get_password(ADMIN_PASSWORD, service))
-"""
 if __name__ == "__main__":
     checkin()

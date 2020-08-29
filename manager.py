@@ -4,6 +4,7 @@ from config_me import read_config
 from auto_url_finder import find_url, open_and_input
 import webbrowser
 from selenium import webdriver
+import pyperclip
 
 if os.path.exists('.env'):
     print('Welcome back, myself.')
@@ -74,6 +75,7 @@ def get_logins(website=None):
         username = c.execute("SELECT username from credentials WHERE rowid=?", (str(rows[0][0]),)).fetchone()[0]
         password = c.execute("SELECT password from credentials WHERE rowid=?", (str(rows[0][0]),)).fetchone()[0]
         print('Username: {} | Password: {}'.format(username, password))
+        pyperclip.copy(password)
         return 'OK'
 
 def get_all():

@@ -1,0 +1,4 @@
+selenium==3.141.0
+google==3.0.0
+pyperclip==1.8.0
+google_api_python_client==1.11.0

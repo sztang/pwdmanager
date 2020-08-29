@@ -19,7 +19,7 @@
 ```python manager.py```
 
 ### pwdmanager Functions
-1. **Get** login credentials
+1. **Get** login credentials (and copy password to clipboard)
 2. **Save** login credentials
 3. **Edit** login credentials
 4. (Open a webpage and) **Print** login credentials

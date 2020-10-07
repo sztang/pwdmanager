@@ -129,7 +129,7 @@ def edit_rows(website=None):
     new_password = str(input('Enter new password (Hit ENTER to use existing): \n'))
     new_url = str(input("Enter new URL (Hit ENTER to use existing): \n"))
     if '' not in [new_username,new_password,new_url]:
-        c.execute("UPDATE credentials SET username=?, password=? WHERE rowid=?",(new_username, new_password, row[0],)) # changing all: include URL
+        c.execute("UPDATE credentials SET username=?, password=?, url=? WHERE rowid=?",(new_username, new_password, new_url, row[0],)) # changing all: include URL
     elif new_url == '':
         if '' not in [new_username,new_password]: # URL empty, but both user and pass updated
             c.execute("UPDATE credentials SET username=?, password=? WHERE rowid=?",(new_username, new_password, row[0],)) #changing user and pass
@@ -141,11 +141,11 @@ def edit_rows(website=None):
         else: # URL empty, pass empty
             c.execute("UPDATE credentials SET username=? WHERE rowid=?",(new_username, row[0],)) # changing only user
     elif new_username == '' and new_password == '':
-        c.execute("UPDATE credentials SET username=? WHERE rowid=?",(new_username, row[0],)) # changing only URL - include URL
+        c.execute("UPDATE credentials SET url=? WHERE rowid=?",(new_url, row[0],)) # changing only URL - include URL
     elif new_username == '':
-        c.execute("UPDATE credentials SET password=? WHERE rowid=?",(new_password, row[0],)) # changing URL and pass - include URL
+        c.execute("UPDATE credentials SET url=?, password=? WHERE rowid=?",(new_url, new_password, row[0],)) # changing URL and pass - include URL
     else:
-        c.execute("UPDATE credentials SET username=? WHERE rowid=?",(new_username, row[0],)) # changing URL and user - include URL
+        c.execute("UPDATE credentials SET url=?, username=? WHERE rowid=?",(new_url, new_username, row[0],)) # changing URL and user - include URL
     
     if get_logins(website) == 'OK':
         print("Credentials updated - you're good to go.")
